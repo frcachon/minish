@@ -10,6 +10,8 @@
 #include <ctype.h>
 #include <stdbool.h>
 
+#include "linea2argv.c"
+
 #define MAXLINE 1024
 #define MAXWORDS 256
 
