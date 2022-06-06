@@ -73,8 +73,9 @@ main(int argc, char *argv[]) {
         }
 
         //fprintf(stderr, "Will execute command %s", line);
-
         int cantidad_de_palabras = linea2argv(line, MAXWORDS, palabras);
+
+
 
         pid_t pid;                          // process ID: an unsigned integer type
         int wait_status;                    // wait status will be filled by waitpid syscall
