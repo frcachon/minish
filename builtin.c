@@ -5,7 +5,7 @@ struct builtin_struct builtin_arr[] = {
     {"cd", builtin_cd, HELP_CD},
     {"dir", builtin_dir, HELP_DIR},
     {"exit", builtin_exit, HELP_EXIT},
-    {"help", builtin_help, HELP_HELP},
+    {"help", builtin_help, HELP_HELP},                  hecho
     {"history", builtin_history, HELP_HISTORY},
     {"getenv", builtin_getenv, HELP_GETENV},
     {"pid", builtin_pid, HELP_PID},
