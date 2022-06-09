@@ -31,6 +31,18 @@ main(int argc, char *argv[]) {
 
     for (;;) {
         prompt(progname);
+        //if (fgets(line, MAXLINE, stdin) == NULL) {  // EOF
+          //  if (feof(stdin)) {
+            //    break;      // normal EOF, break loop
+            //} else {
+             //   continue;   // not EOF, read system call was interrupted, continue loop
+           // }
+        //}
+
+        //int cantidad_de_palabras = linea2argv(line, MAXWORDS, palabras); // parseo de linea ingresada en prompt
+
+        //int status_externo = externo(MAXWORDS, palabras); // para comandos externos
+
         res = fgets(line, MAXLINE, stdin);
 
         int cantidad_de_palabras = linea2argv(line, MAXWORDS, palabras);
