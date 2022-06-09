@@ -8,5 +8,7 @@ int ejecutar(int argc, char **argv)
         globalstatret = matched_struct->func(argc, argv); // Guarda el valor de retorno de cada comando interno ejecutado.
     else
         //aca va para el externo
+        globalstatret = externo(argc, argv); // Guarda el valor de retorno de cada comando externo ejecutado.
+
     return globalstatret;
 }
