@@ -18,7 +18,12 @@ int linea2argv (char *linea, int argc, char **argv) {
     bool separacion = false;
 
     int separaciones = MAXWORDS - 1; // si me quedo sin separaciones, es porque ya tengo 256 palabras, entonces corto
-        int i = 0;
+    int i = 0;
+
+
+    if(!isalnum(linea[0])){
+        return words_qty;
+    }
 
     for (; i < length; i++) {
 
