@@ -7,12 +7,7 @@
 // The value status is returned to the parent process as the process's exit status, and can be
 // collected using one of the wait(2) family of calls.
 
-#include <unistd.h>
-#include <stdlib.h>
-
-int builtin_exit(int argc, char ** argv) {
-
-    return 0;
+int builtin_exit() {
+    exit(globalstatret)
+    return globalstatret;
 }
-
-//void _exit(int status);
