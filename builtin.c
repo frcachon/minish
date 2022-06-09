@@ -2,7 +2,7 @@
 
 /*
 struct builtin_struct builtin_arr[] = {
-    {"cd", builtin_cd, HELP_CD},
+    {"cd", builtin_cd, HELP_CD},                             hecho
     {"dir", builtin_dir, HELP_DIR},
     {"exit", builtin_exit, HELP_EXIT},
     {"help", builtin_help, HELP_HELP},
@@ -12,7 +12,7 @@ struct builtin_struct builtin_arr[] = {
     {"gid", builtin_gid, HELP_GID},
     {"setenv", builtin_setenv, HELP_SETENV},
     {"unsetenv", builtin_unsetenv, HELP_UNSETENV},
-    {"status", builtin_status, HELP_STATUS},
+    {"status", builtin_status, HELP_STATUS},                 hecho
     {"uid", builtin_uid, HELP_UID},
     {NULL, NULL, NULL}};
 */
