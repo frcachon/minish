@@ -3,8 +3,15 @@
 
 int globalstatret = 0;
 
-void prompt(char *ps) { // ps is the prompt string
-    fprintf(stderr, "(%s) ^D to exit > ", ps);
+void print_prompt() {
+   char cwd[1028];
+   if (getcwd(cwd, sizeof(cwd)) != NULL) {
+       printf("%s\n", cwd);
+   } else {
+       error(0, errno, "Error al obtener el path\n");
+       return 1;
+   }
+   return 0;
 }
 
 void sigint_handler(int ssignum) { // the handler for SIGINT
@@ -24,7 +31,7 @@ int main(int argc, char *argv[]) {
     int cantidad_de_palabras;
 
     for (;;) {
-        prompt(progname);
+        print_prompt();
 
         res = fgets(line, MAXLINE, stdin);
         cantidad_de_palabras = linea2argv(line, MAXWORDS, palabras);

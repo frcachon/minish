@@ -7,10 +7,10 @@ struct builtin_struct builtin_arr[] = {
     {"exit", builtin_exit, HELP_EXIT},                  hecho
     {"help", builtin_help, HELP_HELP},                  hecho
     {"history", builtin_history, HELP_HISTORY},
-    {"getenv", builtin_getenv, HELP_GETENV},
-    {"pid", builtin_pid, HELP_PID},
+    {"getenv", builtin_getenv, HELP_GETENV},            hecho
+    {"pid", builtin_pid, HELP_PID},                     hecho
     {"gid", builtin_gid, HELP_GID},
-    {"setenv", builtin_setenv, HELP_SETENV},
+    {"setenv", builtin_setenv, HELP_SETENV},            
     {"unsetenv", builtin_unsetenv, HELP_UNSETENV},
     {"status", builtin_status, HELP_STATUS},            hecho
     {"uid", builtin_uid, HELP_UID},
