@@ -21,6 +21,7 @@
 
 #define HOME "HOME"
 #define OLDPWD "OLDPWD"
+#define HISTORY_FILE ".minish_history"
 
 
 // Variables

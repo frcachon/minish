@@ -1,16 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <error.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include "minish.h"
 #include <signal.h>
-#include <ctype.h>
-#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
 
 int externo (int argc, char **argv) {
+    /*
 
         pid_t pid;                          // process ID: an unsigned integer type
         int wait_status;                    // wait status will be filled by waitpid syscall
@@ -28,7 +25,7 @@ int externo (int argc, char **argv) {
             newact.sa_handler = SIG_DFL;
             sigaction(SIGINT, &newact, NULL);   // reset SIGINT default for child
 
-            execvp(palabras[0],palabras);
+            execvp(argv[0],argv);
             //execlp("sleep", "sleep", "5", NULL);    // if successful, child will go on with new executable
             error(EXIT_FAILURE, errno, "execvp error\n"); // if exec not successful, just exit child
         }
@@ -47,5 +44,5 @@ int externo (int argc, char **argv) {
             // do something with wait_status
             
         }
-        
+    */
 }

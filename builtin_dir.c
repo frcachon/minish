@@ -1,20 +1,4 @@
-#include <dirent.h>
-#include <sys/stat.h>
-#include <limits.h>
-#include <sys/types.h>
-#include <pwd.h>
-#define MAXLINE 1024        // tamaño máximo de la línea de entrada
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <error.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <ctype.h>
-#include <stdbool.h>
-#include <errno.h>
+#include "builtin.h"
 
 void es_File(char *name){
     struct stat file_stat;  
