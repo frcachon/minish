@@ -4,9 +4,15 @@
 int globalstatret = 0;
 
 void
-prompt(char *ps) {
-    // ps is the prompt string
-    fprintf(stderr, "(%s) ^D to exit > ", ps);
+print_prompt() {
+   char cwd[1028];
+   if (getcwd(cwd, sizeof(cwd)) != NULL) {
+       printf("%s\n", cwd);
+   } else {
+       error(0, errno, "Error al obtener el path\n");
+       return 1;
+   }
+   return 0;
 }
 
 // ============== NEW CODE HERE ==============
