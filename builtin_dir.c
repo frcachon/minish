@@ -1,26 +1,4 @@
-#include <dirent.h>
-#include <sys/stat.h>
-#include <limits.h>
-#include <sys/types.h>
-#include <pwd.h>
-#define MAXLINE 1024        // tamaño máximo de la línea de entrada
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <error.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <ctype.h>
-#include <stdbool.h>
-#include <errno.h>
-
-// esto es nomas para que no de error
-int builtin_dir(int argc, char ** argv) {
-    return 0;
-}
-//
+#include "minish.h"
 
 void es_File(char *name){
     struct stat file_stat;  
@@ -71,5 +49,23 @@ int tipo_Archivo(char *name){
         return 1;
     }else{
         return es_Dir(name);
+    }
+}
+
+int builtin_dir(int argc, char ** argv){
+    if(argc == 0){
+        es_Dir(".");
+    }
+    else if(argc == 1){
+        return tipo_Archivo(argv[0]); //ARREGLAR
+        
+    }
+    else if(argc == 2){
+        return con_Filtro(argv[0],argv[1]);
+        
+    }
+    else{
+        error(0, errno, "Muchos argumentos\n"); // will fprintf the error and go on
+        return -1;
     }
 }
