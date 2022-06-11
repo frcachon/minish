@@ -16,6 +16,12 @@
 #include <stdbool.h>
 #include <errno.h>
 
+// esto es nomas para que no de error
+int builtin_dir(int argc, char ** argv) {
+    return 0;
+}
+//
+
 void es_File(char *name){
     struct stat file_stat;  
     int ret = stat(name, &file_stat); 
