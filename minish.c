@@ -3,8 +3,7 @@
 
 int globalstatret = 0;
 
-void
-print_prompt() {
+void print_prompt() {
    char cwd[1028];
    if (getcwd(cwd, sizeof(cwd)) != NULL) {
        printf("%s\n", cwd);
@@ -15,18 +14,13 @@ print_prompt() {
    return 0;
 }
 
-// ============== NEW CODE HERE ==============
-void
-sigint_handler(int ssignum) {                    // the handler for SIGINT
+void sigint_handler(int ssignum) { // the handler for SIGINT
     fprintf(stderr, "Interrupt! (signal number %d)\n", ssignum);
 }
 
-int
-main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
     char line[MAXLINE];
     char *progname = argv[0];
-    struct sigaction newact;
-
     char *palabras[MAXWORDS];
     
     sigaction(SIGINT, NULL, &newact);           // the  previous action for SIGINT is saved in oldact
@@ -34,9 +28,18 @@ main(int argc, char *argv[]) {
     sigaction(SIGINT, &newact, NULL);           // set SIGINT handler for loop
 
     char *res;
+    int cantidad_de_palabras;
 
     for (;;) {
-        prompt(progname);
+        print_prompt();
+
+        res = fgets(line, MAXLINE, stdin);
+        cantidad_de_palabras = linea2argv(line, MAXWORDS, palabras);
+
+        if (res != NULL && cantidad_de_palabras > 0){
+            ejecutar(cantidad_de_palabras, palabras);
+        }
+
         //if (fgets(line, MAXLINE, stdin) == NULL) {  // EOF
           //  if (feof(stdin)) {
             //    break;      // normal EOF, break loop
@@ -44,17 +47,8 @@ main(int argc, char *argv[]) {
              //   continue;   // not EOF, read system call was interrupted, continue loop
            // }
         //}
-
         //int cantidad_de_palabras = linea2argv(line, MAXWORDS, palabras); // parseo de linea ingresada en prompt
-
         //int status_externo = externo(MAXWORDS, palabras); // para comandos externos
-
-        res = fgets(line, MAXLINE, stdin);
-
-        int cantidad_de_palabras = linea2argv(line, MAXWORDS, palabras);
-        if (res != NULL && cantidad_de_palabras > 0){
-            ejecutar(cantidad_de_palabras, palabras);
-        }
     }
 
 }
