@@ -2,6 +2,8 @@
 #include "builtin.h"
 
 int globalstatret = 0;
+struct sigaction oldact;
+struct sigaction newact;
 
 void print_prompt() {
    char cwd[1028];

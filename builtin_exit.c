@@ -12,22 +12,25 @@
 
 int builtin_exit(int argc, char ** argv) {
 
-    if (argc == 1) { // solo comando
-        exit(globalstatret);
-        return globalstatret;
+    if (argc == 1) { // solo comando (sin parametro)
+        exit(globalstatret); // llamo al sistema
+        return globalstatret; // retorno el status global
     }
 
     else if(argc == 2) { // comando con parametro
-        if (isdigit(argv[1]) == 1) { // chequeo si el parametro es numerico
-            exit(argv[1]);
-            return argv[1];
-        } else { // si no es numerico, error
-            return -1;
+    int new_status = *strdup(argv[1]);
+        if (new_status != 0) { // chequeo si el parametro es numerico
+            exit(new_status); // segun la letra, debo llamar al sistema con el estado pasado por parametro
+            return new_status; // y tambien retorno ese estado
+        } else { // si el parametro no es numerico, error
+            error(EXIT_SUCCESS, 0, "El parametro no es numerico.");
+            return 1;
         }
     }
 
     else {
-        return -1;
+        error(EXIT_SUCCESS, 0, "Solo se admite un parametro.");
+        return 1; // para otro caso (multiples parametros), retorno error
     }
 
 }
