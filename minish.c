@@ -2,16 +2,16 @@
 #include "builtin.h"
 
 int globalstatret = 0;
+struct sigaction oldact;
+struct sigaction newact;
 
 void print_prompt() {
    char cwd[1028];
    if (getcwd(cwd, sizeof(cwd)) != NULL) {
-       printf("%s\n", cwd);
+       fprintf(stderr, "%s> ", cwd);
    } else {
        error(0, errno, "Error al obtener el path\n");
-       return 1;
    }
-   return 0;
 }
 
 void sigint_handler(int ssignum) { // the handler for SIGINT
@@ -40,15 +40,6 @@ int main(int argc, char *argv[]) {
             ejecutar(cantidad_de_palabras, palabras);
         }
 
-        //if (fgets(line, MAXLINE, stdin) == NULL) {  // EOF
-          //  if (feof(stdin)) {
-            //    break;      // normal EOF, break loop
-            //} else {
-             //   continue;   // not EOF, read system call was interrupted, continue loop
-           // }
-        //}
-        //int cantidad_de_palabras = linea2argv(line, MAXWORDS, palabras); // parseo de linea ingresada en prompt
-        //int status_externo = externo(MAXWORDS, palabras); // para comandos externos
     }
 
 }
