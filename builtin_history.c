@@ -1,6 +1,6 @@
-#include "builtin.h"
+#include "minish.h"
 
-int builtin_history(int argc, char **argv) {
-
-    return 0;
-}
+void builtin_history()
+{
+  printf("History\n");
+  }
