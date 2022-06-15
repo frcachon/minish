@@ -2,5 +2,5 @@
 
 void builtin_pid()
 {
-  printf("Process ID: %d\n", getpid());
+  printf("ID del proceso: %d\n", getpid());
 }
