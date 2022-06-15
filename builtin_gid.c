@@ -20,5 +20,5 @@ int builtin_gid(){
             printf("%d(%s),",groups[i], grp->gr_name);
         }
     }
-    return 1;
+    return 0;
 }

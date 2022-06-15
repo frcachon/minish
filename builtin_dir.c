@@ -18,7 +18,7 @@ int es_Dir(char *name){ //El archivo es directorio, por ende se debe imprimir to
         es_File(dir->d_name);
     }
     closedir(pDirectorio); //Cerramos el directorio
-    return 1; 
+    return 0; 
 }
 
 int con_Filtro(char *name, char*filtro){ //Recibe el directorio y el filtro para obtener los archivos dentro
@@ -27,7 +27,7 @@ int con_Filtro(char *name, char*filtro){ //Recibe el directorio y el filtro para
     pDirectorio = opendir(name);
     if(pDirectorio == NULL){
         error(0, errno, "Directorio inválido\n");
-        return -1;
+        return 1;
     }
     while((dir = readdir(pDirectorio))!= NULL){
         if(strstr(dir->d_name, filtro)){
@@ -35,7 +35,7 @@ int con_Filtro(char *name, char*filtro){ //Recibe el directorio y el filtro para
         }
     }
     closedir(pDirectorio);
-    return 1; 
+    return 0; 
 }
 
 int tipo_Archivo(char *name){ //Se verifica que tipo de archivo es
@@ -46,7 +46,7 @@ int tipo_Archivo(char *name){ //Se verifica que tipo de archivo es
     }
     else if(S_ISREG(file_stat.st_mode)){ //Verificamos si es un archivo regular
         printf("%25s       %9ld       %9s \n",name,file_stat.st_ino, getpwuid(file_stat.st_uid)->pw_name); //Si lo es, imprimimos la información.
-        return 1;
+        return 0;
     }else{ //Si no lo es, lo tomamos como directorio
         return es_Dir(name);
     }
@@ -54,7 +54,7 @@ int tipo_Archivo(char *name){ //Se verifica que tipo de archivo es
 
 int builtin_dir(int argc, char ** argv){
     if(argc == 1){ //Si no obtenemos nada, tomamos el archivo corriente
-        es_Dir(".");
+        return es_Dir(".");
     }
     else if(argc == 2){ //Si obtenemos un solo argumento, puede ser un directorio o un archivo regular
         return tipo_Archivo(argv[1]); 

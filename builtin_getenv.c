@@ -7,7 +7,9 @@ int builtin_getenv(int argc, char ** argv){
         if (( pTmp =getenv(argv[i])) != NULL ){ 
         printf("%s = %s\n", argv[i],pTmp);
         } else{
-            error(0, errno, "No se encontró la variable\n");        
+            error(0, errno, "No se encontró la variable\n");
+            return 1;        
         }
     }
+    return 0;
 }
