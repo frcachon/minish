@@ -23,9 +23,10 @@
 #define HOME "HOME"
 #define OLDPWD "OLDPWD"
 
-
 // Variables
 extern int globalstatret; // guarda status del ultimo comando - deberá definirse en el main
+extern struct sigaction oldact;
+extern struct sigaction newact;
 
 // Funciones
 extern int ejecutar(int argc, char **argv);
