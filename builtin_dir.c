@@ -39,6 +39,7 @@ int con_Filtro(char *name, char*filtro) { //Recibe el directorio y el filtro par
 }
 
 int tipo_Archivo(char *name) { //Se verifica que tipo de archivo es
+    
     struct stat file_stat;  
     int ret = stat(name, &file_stat);
     if(ret < 0) { //Tomamos el directorio corriente y buscamos dentro los archivos regulables que tengan las letras que estan en el name

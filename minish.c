@@ -45,9 +45,8 @@ void append_history(char *line) {
     }
 }
 
-int main(int argc, char *argv[]) {
+int main(__attribute__((unused)) int argc,__attribute__((unused)) char *argv[]) {
     char line[MAXLINE];
-    char *progname = argv[0];
     char *palabras[MAXWORDS];                   // la estructura equivalente a argv[]
     
     sigaction(SIGINT, NULL, &newact);           // the  previous action for SIGINT is saved in oldact
