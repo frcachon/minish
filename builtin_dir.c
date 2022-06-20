@@ -2,7 +2,7 @@
 
 void es_File(char *name){ //Abrimos la informacion del archivo regulable
     struct stat file_stat;  
-    int ret = stat(name, &file_stat); 
+    __attribute__((unused)) int ret = stat(name, &file_stat); 
     printf("%25s       %9ld       %9s \n",name,file_stat.st_ino, getpwuid(file_stat.st_uid)->pw_name);
 }
 

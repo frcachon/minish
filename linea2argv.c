@@ -8,7 +8,7 @@
 #define MAXLINE 1024
 #define MAXWORDS 256
  
-int linea2argv (char *linea, int argc, char **argv) {
+int linea2argv (char *linea,__attribute__((unused)) int argc, char **argv) {
     int words_qty = 0;
 
     int length = strlen(linea);
