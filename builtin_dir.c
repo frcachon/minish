@@ -1,27 +1,66 @@
 #include "minish.h"
 
-void es_File(char *name){ //Abrimos la informacion del archivo regulable
+int print_information(char *name_of_file){ //Imprime la información del archivo
+    char * months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+    struct passwd *pwd = malloc(sizeof(struct passwd)*100);
     struct stat file_stat;  
-    int ret = stat(name, &file_stat); 
-    printf("%25s       %9ld       %9s \n",name,file_stat.st_ino, getpwuid(file_stat.st_uid)->pw_name);
-}
-
-int es_Dir(char *name){ //El archivo es directorio, por ende se debe imprimir toda la informacion de cada uno de los archivos dentro. 
-    struct dirent *dir;
-    DIR *pDirectorio;
-    pDirectorio = opendir(name); //Abrimos el directorio
-    if(pDirectorio == NULL){ //Error al abrir el directorio
-        error(0, errno, "Directorio inválido\n");
+    int ret = stat(name_of_file, &file_stat); 
+    pwd = getpwuid(file_stat.st_uid);
+    char* name_files = pwd->pw_name;
+    struct tm* clock;
+    clock = gmtime(&(file_stat.st_ctime));
+    int ngroups = getgroups (0, NULL);
+    gid_t *groups = (gid_t *) malloc (ngroups * sizeof (gid_t));
+    struct group *grp;
+    int val = getgroups (ngroups, groups);
+    grp = getgrgid(groups[0]);
+    if(pwd == NULL || val == 0){
+        error(0, errno, "Falla al leer la información del archivo\n");
         return 1;
     }
-    while((dir = readdir(pDirectorio))!= NULL){ //Vamos leyendo cada archivo dentro
-        es_File(dir->d_name);
+    else{
+        printf( (S_ISDIR(file_stat.st_mode)) ? "d" : "-");
+        printf( (file_stat.st_mode & S_IRUSR) ? "r" : "-");
+        printf( (file_stat.st_mode & S_IWUSR) ? "w" : "-");
+        printf( (file_stat.st_mode & S_IXUSR) ? "x" : "-");
+        printf( (file_stat.st_mode & S_IRGRP) ? "r" : "-");
+        printf( (file_stat.st_mode & S_IWGRP) ? "w" : "-");
+        printf( (file_stat.st_mode & S_IXGRP) ? "x" : "-");
+        printf( (file_stat.st_mode & S_IROTH) ? "r" : "-");
+        printf( (file_stat.st_mode & S_IWOTH) ? "w" : "-");
+        printf( (file_stat.st_mode & S_IXOTH) ? "x" : "-");
+        printf("  %-15s %-15s %-7ld  %-7ld  %10s %-2d %-30s\n",pwd->pw_name,grp->gr_name,file_stat.st_size,file_stat.st_ino, months[clock->tm_mon],clock->tm_mday,name_of_file);
     }
-    closedir(pDirectorio); //Cerramos el directorio
-    return 0; 
+
+    return 0;
+
 }
 
-int con_Filtro(char *name, char*filtro){ //Recibe el directorio y el filtro para obtener los archivos dentro
+int traverse_list(char **list_of_names, int size){ //Recorre la lista ordenada
+    for(int index = 0; index < size; index++){
+        if(print_information(list_of_names[index]) == 0){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int sort(char **list_of_name, int size){ //Ordena la listaa
+    for(int first_index=0; first_index < size-1; first_index++){
+        for(int second_index = first_index + 1; second_index < size; second_index++){
+            if(strcmp(list_of_name[first_index], list_of_name[second_index]) > 0){
+                char* temp = list_of_name[first_index];
+                list_of_name[first_index] = list_of_name[second_index];
+                list_of_name[second_index] = temp;
+            }
+        }
+    }
+    return traverse_list(list_of_name, size);
+}
+
+int search_directory(char *name){ //Buscar en el directorio cada archivo
+    char** list_names = malloc(sizeof(char*)*100);
+    int size_of_list = 0;
     struct dirent *dir;
     DIR *pDirectorio;
     pDirectorio = opendir(name);
@@ -30,42 +69,68 @@ int con_Filtro(char *name, char*filtro){ //Recibe el directorio y el filtro para
         return 1;
     }
     while((dir = readdir(pDirectorio))!= NULL){
+        char* name_file = malloc(sizeof(char)*100);
+        name_file = dir->d_name;
+        list_names[size_of_list] = name_file;
+        size_of_list++;
+    }
+    closedir(pDirectorio);
+    return sort(list_names, size_of_list); 
+}
+int search_with_filter(char *name, char*filtro){ //Busca en el directorio con el filtro correspondiente
+    char** list_names = malloc(sizeof(char*)*100);
+    int size_of_list = 0;
+    struct dirent *dir;
+    DIR *pDirectorio;
+    pDirectorio = opendir(name);
+    dir = readdir(pDirectorio);
+    if(pDirectorio == NULL){
+        error(0, errno, "Directorio inválido\n");
+        return 1;
+    }
+    while((dir = readdir(pDirectorio))!= NULL){
         if(strstr(dir->d_name, filtro)){
-            es_File(dir->d_name);
+            char* name_file = malloc(sizeof(char)*100);
+            name_file = dir->d_name;
+            list_names[size_of_list] = name_file;
+            size_of_list++;
         }
     }
     closedir(pDirectorio);
-    return 0; 
+    return sort(list_names, size_of_list); 
 }
 
-int tipo_Archivo(char *name){ //Se verifica que tipo de archivo es
+int type_of_file(char *name){ //Define el tipo de archivo  que es
     struct stat file_stat;  
     int ret = stat(name, &file_stat);
-    if(ret < 0){ //Tomamos el directorio corriente y buscamos dentro los archivos regulables que tengan las letras que estan en el name
-        return con_Filtro(".",name);
+    if(ret < 0){
+        return search_with_filter(".",name);
     }
-    else if(S_ISREG(file_stat.st_mode)){ //Verificamos si es un archivo regular
-        printf("%25s       %9ld       %9s \n",name,file_stat.st_ino, getpwuid(file_stat.st_uid)->pw_name); //Si lo es, imprimimos la información.
-        return 0;
-    }else{ //Si no lo es, lo tomamos como directorio
-        return es_Dir(name);
+    else if(S_ISREG(file_stat.st_mode)){
+        return print_information(name);
+    }else{
+        return search_directory(name);
     }
+    return 0;
 }
 
 int builtin_dir(int argc, char ** argv){
-    if(argc == 1){ //Si no obtenemos nada, tomamos el archivo corriente
-        return es_Dir(".");
+
+
+    if(argc == 0){
+        search_directory(".");
     }
-    else if(argc == 2){ //Si obtenemos un solo argumento, puede ser un directorio o un archivo regular
-        return tipo_Archivo(argv[1]); 
+    else if(argc == 1){
+        return type_of_file(argv[0]); //ARREGLAR
         
     }
-    else if(argc == 3){ //Si obtenemos 2 argumentos, es un directorio y el filtro para obtener los archivos regulables
-        return con_Filtro(argv[1],argv[2]);
+    else if(argc == 2){
+        return search_with_filter(argv[0],argv[1]);
         
     }
     else{
-        error(0, errno, "Muchos argumentos\n"); 
+        error(0, errno, "Muchos argumentos\n"); // will fprintf the error and go on
         return 1;
     }
+    return 0;
 }
