@@ -12,11 +12,9 @@
 
 #include "minish.h"
 
-int externo (int argc, char **argv) {
+int externo (__attribute__((unused)) int argc, char **argv) {
 
-    
-
-    pid_t pid;                          // process ID: an unsigned integer type
+    pid_t pid,w;                          // process ID: an unsigned integer type
     int wait_status;                    // wait status will be filled by waitpid syscall
 
     sigaction(SIGINT, NULL, &oldact);   // the  previous action for SIGINT is saved in oldact
@@ -41,13 +39,22 @@ int externo (int argc, char **argv) {
         newact.sa_handler = SIG_IGN;
         sigaction(SIGINT, &newact, NULL);   // ignore SIGINT while waiting
 
-        waitpid(pid, &wait_status, 0);
+        w = waitpid(pid, &wait_status, 0);
+
+        if (w == -1) {
+            perror("waitpid");
+            exit(EXIT_FAILURE);
+        }
+        if (WIFEXITED(wait_status)) {
+            return(WEXITSTATUS(wait_status));
+        } else if (WIFSIGNALED(wait_status)) {
+            return(WTERMSIG(wait_status));
+        }
 
         sigaction(SIGINT, &oldact, NULL);   // restore SIGINT when child finishes
 
         // do something with wait_status
 
     }
-
-     
+    return 1;
 }

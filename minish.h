@@ -18,9 +18,11 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+
 #define MAXLINE 1024                   // tamaño máximo de la línea de entrada
 #define MAXCWD 1024                    // tamaño máximo para alojar el pathname completo del directorio corriente
 #define MAXWORDS 256                   // cantidad máxima de palabras en la línea
+#define HISTORY_FILE ".minish_history"
 
 #define HOME "HOME"
 #define OLDPWD "OLDPWD"
