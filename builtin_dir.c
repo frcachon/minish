@@ -37,7 +37,7 @@ int print_information(char *name_of_file){ //Imprime la información del archivo
 
 int traverse_list(char **list_of_names, int size){ //Recorre la lista ordenada
     for(int index = 0; index < size; index++){
-        if(print_information(list_of_names[index]) == 0){
+        if(print_information(list_of_names[index]) == 1){
             return 1;
         }
     }
