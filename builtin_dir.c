@@ -117,15 +117,15 @@ int type_of_file(char *name){ //Define el tipo de archivo  que es
 int builtin_dir(int argc, char ** argv){
 
 
-    if(argc == 0){
+    if(argc == 1){
         search_directory(".");
     }
-    else if(argc == 1){
-        return type_of_file(argv[0]); //ARREGLAR
+    else if(argc == 2){
+        return type_of_file(argv[1]); //ARREGLAR
         
     }
-    else if(argc == 2){
-        return search_with_filter(argv[0],argv[1]);
+    else if(argc == 3){
+        return search_with_filter(argv[1],argv[2]);
         
     }
     else{
