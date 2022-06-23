@@ -33,7 +33,6 @@ int print_information(char *name_of_file){ //Imprime la información del archivo
     }
 
     return 0;
-
 }
 
 int traverse_list(char **list_of_names, int size){ //Recorre la lista ordenada
@@ -88,7 +87,7 @@ int search_with_filter(char *name, char*filtro){ //Busca en el directorio con el
         error(0, errno, "Directorio inválido\n");
         return 1;
     }
-    while((dir = readdir(pDirectorio))!= NULL){
+    while((dir = readdir(pDirectorio))!= NULL) {
         if(strstr(dir->d_name, filtro)){
             char* name_file = malloc(sizeof(char)*100);
             name_file = dir->d_name;
@@ -99,7 +98,6 @@ int search_with_filter(char *name, char*filtro){ //Busca en el directorio con el
     closedir(pDirectorio);
     return sort(list_names, size_of_list); 
 }
-
 int type_of_file(char *name){ //Define el tipo de archivo  que es
     struct stat file_stat;  
     int ret = stat(name, &file_stat);
@@ -113,7 +111,6 @@ int type_of_file(char *name){ //Define el tipo de archivo  que es
     }
     return 0;
 }
-
 int builtin_dir(int argc, char ** argv){
 
 
