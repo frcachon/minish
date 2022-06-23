@@ -15,6 +15,8 @@
 #include <dirent.h>
 #include <time.h>
 #include <grp.h>
+#include <stdbool.h>
+#include <ctype.h>
 
 
 #define MAXLINE 1024                   // tamaño máximo de la línea de entrada
